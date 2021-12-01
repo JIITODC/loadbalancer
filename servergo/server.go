@@ -1,4 +1,4 @@
-package servergo
+package main
 
 import (
 	"net/http"
@@ -27,6 +27,7 @@ func main(){
 	}
 	go server2.ListenAndServe()
 	println("server 2 running on port 3002")
+	
 	//server 3
 	myMux3 := http.NewServeMux()
 	myMux3.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {println("server 3 says hello")})

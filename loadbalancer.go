@@ -1,22 +1,29 @@
-package balancer
+package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
-
-	"github.com/Shreyas220/loadbalancer/healthcheck"
 )
 
 //server pool
 var (
-	serverList = []*healthcheck.Server{
-		healthcheck.NewServer("http://127.0.0.1:3001"),
-		healthcheck.NewServer("http://127.0.0.1:3002"),
-		healthcheck.NewServer("http://127.0.0.1:3003"),
-		healthcheck.NewServer("http://127.0.0.1:3004"),
-	}
+	serverList  []*serve
 	lastServedIndex = 0
 )
+
+func main() {
+	serverList = []*serve { 
+		newServer("Server-1","http://127.0.0.1:3001"),
+		newServer("Server-2","http://127.0.0.1:3002"),
+		newServer("Server-3","http://127.0.0.1:3003"),
+		newServer("Server-4","http://127.0.0.1:3004"),
+	}
+	http.HandleFunc("/",ForwardRequest)
+	println("length of serverlist is ",len(serverList))
+	go StartHealthCheck() 
+	log.Fatal(http.ListenAndServe(":8000",nil))
+}
 
 func ForwardRequest(res http.ResponseWriter, req *http.Request){
 	server , err := getHealthyServer()
@@ -26,7 +33,7 @@ func ForwardRequest(res http.ResponseWriter, req *http.Request){
 	server.ReverseProxy.ServeHTTP(res,req)
 }
 
-func getHealthyServer() (*healthcheck.Server, error) {
+func getHealthyServer() (*serve, error) {
 	for i:=0; i< len(serverList);i++ {
 		server:= getServer()
 		if server.Health {
@@ -36,11 +43,10 @@ func getHealthyServer() (*healthcheck.Server, error) {
 	return nil , fmt.Errorf("no healthy hosts")
 }
 
-func getServer() *healthcheck.Server {
+func getServer() *serve {
 	nextIndex := (lastServedIndex + 1) % len(serverList)
 	server := serverList[nextIndex]
 	lastServedIndex = nextIndex
-
 	return server
 }
 

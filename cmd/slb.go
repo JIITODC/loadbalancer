@@ -1,6 +1,6 @@
 package main
 
-import (
+/* import (
 	"log"
 	"net/http"
 
@@ -14,4 +14,4 @@ func main() {
 	http.HandleFunc("/",balancer.ForwardRequest)
 	println("loadbalancer started on port 8000")
 	log.Fatal(http.ListenAndServe(":8000", nil))
-}
+} */
