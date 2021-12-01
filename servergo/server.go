@@ -1,7 +1,6 @@
-package main
+package servergo
 
 import (
-	"log"
 	"net/http"
 )
 
@@ -15,8 +14,9 @@ func main(){
 		Addr:    "127.0.0.1:3001",
 		Handler: myMux,
 	}
+	
 	go server.ListenAndServe()
-
+	println("server 1 running on port 3001")
 	//server 2
 	myMux2 := http.NewServeMux()
 	myMux2.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {println("server 2 says hello")})
@@ -26,7 +26,7 @@ func main(){
 		Handler: myMux2,
 	}
 	go server2.ListenAndServe()
-
+	println("server 2 running on port 3002")
 	//server 3
 	myMux3 := http.NewServeMux()
 	myMux3.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {println("server 3 says hello")})
@@ -36,6 +36,7 @@ func main(){
 		Handler: myMux3,
 	}
 	go server3.ListenAndServe()
+	println("server 3 running on port 3003")
 
 	//server4
 	myMux4 := http.NewServeMux()
@@ -45,7 +46,9 @@ func main(){
 		Addr:    "127.0.0.1:3004",
 		Handler: myMux4,
 	}
+	println("server 4 running on port 3004")
 	server4.ListenAndServe()
+	
 
 
 
@@ -64,36 +67,3 @@ func server1() {
 
 }
 
-func server2() {
-	myMux := http.NewServeMux()
-	myMux.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {println("server 2 says hello")})
-
-	server := &http.Server{
-		Addr:    "127.0.0.1:3002",
-		Handler: myMux,
-	}
-	server.ListenAndServe()
-
-}
-func server3() {
-	myMux := http.NewServeMux()
-	myMux.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {println("server 3 says hello")})
-
-	server := &http.Server{
-		Addr:    "127.0.0.1:3003",
-		Handler: myMux,
-	}
-	server.ListenAndServe()
-
-}
-func server4() {
-	myMux := http.NewServeMux()
-	myMux.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {log.Println("server 4 says hello")})
-
-	server := &http.Server{
-		Addr:    "127.0.0.1:3004",
-		Handler: myMux,
-	}
-	server.ListenAndServe()
-
-}
