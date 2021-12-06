@@ -21,7 +21,9 @@ func main() {
 	}
 	http.HandleFunc("/",ForwardRequest)
 	println("length of serverlist is ",len(serverList))
+
 	go StartHealthCheck() 
+	
 	log.Fatal(http.ListenAndServe(":8000",nil))
 }
 

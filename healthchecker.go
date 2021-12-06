@@ -26,7 +26,7 @@ func StartHealthCheck() {
 		}, 2 * time.Second)
 
 			if err != nil {
-				log.Fatalln(err)
+				println("error \n")
 			}
 	
 
