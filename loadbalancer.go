@@ -8,41 +8,41 @@ import (
 
 //server pool
 var (
-	serverList  []*serve
+	serverList      []*serve
 	lastServedIndex = 0
 )
 
 func main() {
-	serverList = []*serve { 
-		newServer("Server-1","http://127.0.0.1:3001"),
-		newServer("Server-2","http://127.0.0.1:3002"),
-		newServer("Server-3","http://127.0.0.1:3003"),
-		newServer("Server-4","http://127.0.0.1:3004"),
+	serverList = []*serve{
+		newServer("Server-1", "http://127.0.0.1:3001"),
+		newServer("Server-2", "http://127.0.0.1:3002"),
+		newServer("Server-3", "http://127.0.0.1:3003"),
+		newServer("Server-4", "http://127.0.0.1:3004"),
 	}
-	http.HandleFunc("/",ForwardRequest)
-	println("length of serverlist is ",len(serverList))
+	http.HandleFunc("/", ForwardRequest)
+	println("length of serverlist is ", len(serverList))
 
-	go StartHealthCheck() 
-	
-	log.Fatal(http.ListenAndServe(":8000",nil))
+	go StartHealthCheck()
+
+	log.Fatal(http.ListenAndServe(":8000", nil))
 }
 
-func ForwardRequest(res http.ResponseWriter, req *http.Request){
-	server , err := getHealthyServer()
+func ForwardRequest(res http.ResponseWriter, req *http.Request) {
+	server, err := getHealthyServer()
 	if err != nil {
-		fmt.Fprintf(res,"Couldnt process request: %s", err.Error())
+		fmt.Fprintf(res, "Couldnt process request: %s", err.Error())
 	}
-	server.ReverseProxy.ServeHTTP(res,req)
+	server.ReverseProxy.ServeHTTP(res, req)
 }
 
 func getHealthyServer() (*serve, error) {
-	for i:=0; i< len(serverList);i++ {
-		server:= getServer()
+	for i := 0; i < len(serverList); i++ {
+		server := getServer()
 		if server.Health {
-			return server,nil
+			return server, nil
 		}
 	}
-	return nil , fmt.Errorf("no healthy hosts")
+	return nil, fmt.Errorf("no healthy hosts")
 }
 
 func getServer() *serve {
@@ -51,4 +51,3 @@ func getServer() *serve {
 	lastServedIndex = nextIndex
 	return server
 }
-

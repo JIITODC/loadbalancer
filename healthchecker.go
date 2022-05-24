@@ -11,26 +11,22 @@ import (
 func StartHealthCheck() {
 	taskScheduler := chrono.NewDefaultTaskScheduler()
 	log.Printf("before loop")
-	
-		_, err := taskScheduler.ScheduleAtFixedRate(func(ctx context.Context) {
-			for _, server := range serverList {
-			name,healthy := server.checkHealth()
+
+	_, err := taskScheduler.ScheduleAtFixedRate(func(ctx context.Context) {
+		for _, server := range serverList {
+			name, healthy := server.checkHealth()
 			if healthy {
-				log.Printf("🟢'%s' is healthy!",name )
+				log.Printf("🟢'%s' is healthy!", name)
 			} else {
-				log.Printf("🔴'%s' is unhealthy!",name)
+				log.Printf("🔴'%s' is unhealthy!", name)
 			}
 		}
 		println("")
 
-		}, 2 * time.Second)
+	}, 2*time.Second)
 
-			if err != nil {
-				println("error \n")
-			}
-	
+	if err != nil {
+		println("error \n")
+	}
 
-	
 }
-
-

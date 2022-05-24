@@ -12,17 +12,16 @@ import (
 func main() {
 
 	for {
-			payload := fmt.Sprintf(`{ "seconds": %v }`, randonDuration())
-			body := strings.NewReader(payload)
+		payload := fmt.Sprintf(`{ "seconds": %v }`, randonDuration())
+		body := strings.NewReader(payload)
 
-			log.Printf("sending request with payload: %v", payload)
-			res, err := http.Post("http://localhost:8000/", "application/json", body)
+		log.Printf("sending request with payload: %v", payload)
+		res, err := http.Post("http://localhost:8000/", "application/json", body)
 
-			badReq := res != nil && res.StatusCode >= 400
-			if err != nil || badReq {
-				log.Printf("requests failed, res: %v err: %v", res, err)
-			}
-		
+		badReq := res != nil && res.StatusCode >= 400
+		if err != nil || badReq {
+			log.Printf("requests failed, res: %v err: %v", res, err)
+		}
 
 		randomPause()
 	}
