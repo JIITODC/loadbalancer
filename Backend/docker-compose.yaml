@@ -1,0 +1,53 @@
+version: "3.7"
+services:
+
+  demo-service-1:
+    image: delusionaloptimist/demo-service:latest
+    restart: "no"
+    networks:
+      - demo-net
+    labels:
+      com.docker-lb.load-balance: "true"
+      com.docker-lb.service-name: "demo-service"
+    environment:
+      SERVICE: 1
+      PORT: 80
+
+  demo-service-2:
+    image: delusionaloptimist/demo-service:latest
+    restart: "no"
+    networks:
+      - demo-net
+    labels:
+      com.docker-lb.load-balance: "true"
+      com.docker-lb.service-name: "demo-service"
+    environment:
+      SERVICE: 2
+      PORT: 80
+
+  demo-service-3:
+    image: delusionaloptimist/demo-service:latest
+    restart: "no"
+    networks:
+      - demo-net
+    labels:
+      com.docker-lb.load-balance: "true"
+      com.docker-lb.service-name: "demo-service"
+    environment:
+      SERVICE: 3
+      PORT: 80
+
+  demo-service-4:
+    image: delusionaloptimist/demo-service:latest
+    restart: "no"
+    networks:
+      - demo-net
+    labels:
+      com.docker-lb.load-balance: "true"
+      com.docker-lb.service-name: "demo-service"
+    environment:
+      SERVICE: 4
+      PORT: 80
+
+networks:
+  demo-net: {}
