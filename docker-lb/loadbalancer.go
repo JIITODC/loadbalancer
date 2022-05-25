@@ -19,9 +19,9 @@ import (
 //server pool
 var (
 	lastServedIndex = 0
-	Docker *DockerHandler
-	Logger *log.Logger
-	SigChan chan os.Signal
+	Docker          *DockerHandler
+	Logger          *log.Logger
+	SigChan         chan os.Signal
 )
 
 const (
@@ -33,7 +33,6 @@ type DockerHandler struct {
 	ContainerIDs map[string]struct{}
 	Servers      []*models.Server
 }
-
 
 // init Function
 func init() {
@@ -101,7 +100,8 @@ func main() {
 						delete(Docker.ContainerIDs, containerID)
 						for _, server := range Docker.Servers {
 							if server.ContainerID == containerID {
-								server.Healthy = false
+								Logger.Printf("STOPPED MONTIORING %s AS IT IS UNHEALTHY!", server.Name)
+								server = nil
 							}
 						}
 					}

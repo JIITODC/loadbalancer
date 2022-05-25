@@ -22,6 +22,9 @@ func main() {
 
 	// handlers
 	myMux := http.NewServeMux()
+	myMux.HandleFunc("/health", func(rw http.ResponseWriter, r *http.Request) {
+		return
+	})
 	myMux.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
 		if r.Method != "HEAD" {
 			logger.Printf("%s request received...\n", r.Method)
