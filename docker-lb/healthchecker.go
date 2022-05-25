@@ -10,10 +10,8 @@ func StartHealthCheck() {
 			name, healthy := server.CheckHealth()
 			if healthy {
 				Logger.Printf("%s is healthy!", name)
-			} else {
-				Logger.Printf("%s is unhealthy!", name)
 			}
 		}
-		time.Sleep(1 * time.Second)
+		time.Sleep(5 * time.Second)
 	}
 }
