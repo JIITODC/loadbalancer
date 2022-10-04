@@ -3,7 +3,7 @@
 ## How to run locally 
 This command will spwan multiple toy load servers on docker 
 ```
-docker build Backend/
+docker compose up
 ```
 
 Now to run loadbalancer fo 
