@@ -1,0 +1,24 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Go Patch
+/vendor/
+/Godeps/
+
+# Go workspace file
+go.work
+
+# General VSCode,OS files
+.tmp
+.nfs*
+/**/*.log
+.vscode/*
+.history
+.DS_Store
