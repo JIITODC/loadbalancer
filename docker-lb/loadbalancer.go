@@ -11,9 +11,10 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/Shreyas220/loadbalancer/models"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
+
+	"github.com/Shreyas220/loadbalancer/models"
 )
 
 //server pool
@@ -134,12 +135,19 @@ func (dh *DockerHandler) GetServiceInfo(containerID string) (*models.Server, err
 
 	// labels tell us if a service has to be load balanced or not
 	labels := inspect.Config.Labels
-	loadBalance := labels["com.docker-lb.load-balance"]
-	if loadBalance != "true" {
+
+	// fetch label name
+	key, isFound := os.LookupEnv("LB_LABEL_NAME")
+	if !isFound {
+		key = "com.docker-lb.load-balance"
+		Logger.Printf("LB_LABEL_NAME not found, falling back to %s", key)
+	}
+
+	if _, ok := labels[key]; !ok {
 		return &models.Server{}, nil
 	}
 
-	server.ServiceName = labels["com.docker-lb.service-name"]
+	server.ServiceName = labels[key]
 
 	server.Name = inspect.Name
 
