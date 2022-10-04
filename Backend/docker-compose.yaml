@@ -2,7 +2,7 @@ version: "3.7"
 services:
 
   demo-service-1:
-    image: delusionaloptimist/demo-service:latest
+    image: gladium08/load-server
     restart: "no"
     networks:
       - demo-net
@@ -14,7 +14,7 @@ services:
       PORT: 80
 
   demo-service-2:
-    image: delusionaloptimist/demo-service:latest
+    image: gladium08/load-server
     restart: "no"
     networks:
       - demo-net
@@ -26,7 +26,7 @@ services:
       PORT: 80
 
   demo-service-3:
-    image: delusionaloptimist/demo-service:latest
+    image: gladium08/load-server
     restart: "no"
     networks:
       - demo-net
@@ -38,7 +38,7 @@ services:
       PORT: 80
 
   demo-service-4:
-    image: delusionaloptimist/demo-service:latest
+    image: gladium08/load-server
     restart: "no"
     networks:
       - demo-net
