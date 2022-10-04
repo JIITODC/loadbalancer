@@ -12,3 +12,6 @@ go run ./docker-lb
 ```
 
 Now you can ping 
+```
+curl localhost:8000
+```
