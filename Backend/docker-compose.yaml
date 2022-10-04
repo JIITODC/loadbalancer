@@ -49,5 +49,17 @@ services:
       SERVICE: 4
       PORT: 80
 
+  demo-service-5:
+    image: gladium08/load-server
+    restart: "no"
+    networks:
+      - demo-net
+    labels:
+      com.docker-lb.load-balance: "true"
+      com.docker-lb.service-name: "demo-service"
+    environment:
+      SERVICE: 5
+      PORT: 80
+
 networks:
   demo-net: {}
