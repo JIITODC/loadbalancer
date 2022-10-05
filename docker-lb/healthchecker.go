@@ -6,10 +6,10 @@ import (
 
 func StartHealthCheck() {
 	for {
-		for _, server := range Docker.Servers {
+		for _, server := range dh.Docker.Servers {
 			name, healthy := server.CheckHealth()
 			if healthy {
-				Logger.Printf("%s is healthy!", name)
+				dh.Logger.Printf("%s is healthy!", name)
 			}
 		}
 		time.Sleep(5 * time.Second)
