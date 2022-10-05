@@ -1,0 +1,30 @@
+name: build
+
+on:
+  workflow_call:
+    inputs:
+      go_version:
+        type: string
+        required: false
+        default: 1.16
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: build
+    defaults:
+      run:
+        working-directory: ./go/src/github.com/${{ github.repository }}
+    steps:
+      - name: setup go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ inputs.go_version }}
+      - name: checkout ${{ github.repository }}
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+          path: ./go/src/github.com/${{ github.repository }}
+      - name: build
+        run: |
+          make build

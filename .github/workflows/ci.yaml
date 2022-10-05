@@ -1,0 +1,13 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches:
+      - "master"
+
+jobs:
+  ci:
+    uses: JIITODC/loadbalancer/.github/workflows/build.yaml@master
+    with:
+      go_version: 1.16
