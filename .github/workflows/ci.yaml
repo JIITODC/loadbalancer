@@ -8,6 +8,6 @@ on:
 
 jobs:
   ci:
-    uses: Shreyas220/loadbalancer/.github/workflows/build.yaml@master
+    uses: JIITODC/loadbalancer/.github/workflows/build.yaml@master
     with:
       go_version: 1.16
