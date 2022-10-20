@@ -6,7 +6,7 @@ on:
       go_version:
         type: string
         required: false
-        default: 1.16
+        default: 1.19
 
 jobs:
   build:

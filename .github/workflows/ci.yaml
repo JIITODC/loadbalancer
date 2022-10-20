@@ -10,4 +10,4 @@ jobs:
   ci:
     uses: JIITODC/loadbalancer/.github/workflows/build.yaml@master
     with:
-      go_version: 1.16
+      go_version: 1.19
