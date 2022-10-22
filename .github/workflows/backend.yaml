@@ -25,4 +25,4 @@ jobs:
           context: ./Backend
           file: ./Backend/Dockerfile
           push: true
-          tags: "${{ secrets.DOCKER_NAMESPACE }}/demo-service:latest"
+          tags: "${{ secrets.DOCKER_USERNAME }}/demo-service:latest"
