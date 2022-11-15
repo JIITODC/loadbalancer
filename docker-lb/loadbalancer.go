@@ -22,6 +22,7 @@ var (
 )
 
 func main() {
+	dh.Label = GetLabel()
 
 	// check if DockerHandler exists
 	dh.Logger.Println("Started to monitor docker services")
@@ -44,6 +45,9 @@ func loadbalancer() {
 
 		default:
 			containers, err := dh.ListDockerContainers()
+			if len(containers) == 0 {
+				dh.Logger.Printf("No container to forward to")
+			}
 			if err != nil {
 				return
 			}
@@ -64,7 +68,9 @@ func loadbalancer() {
 					if err != nil {
 						log.Println("WARNING", err)
 					}
-					dh.Docker.Servers = append(dh.Docker.Servers, serviceInfo)
+					if serviceInfo != nil {
+						dh.Docker.Servers = append(dh.Docker.Servers, serviceInfo)
+					}
 				}
 			}
 
@@ -78,6 +84,9 @@ func loadbalancer() {
 						}
 					}
 				}
+			}
+			if len(dh.Docker.Servers) < 1 && len(dh.Docker.Servers) == 0 {
+				dh.Logger.Printf("No server with label name %s found to forward", dh.Label)
 			}
 		}
 
@@ -109,4 +118,13 @@ func GetNextServer() *models.Server {
 	server := dh.Docker.Servers[nextIndex]
 	dh.LastServedIndex = nextIndex
 	return server
+}
+
+func GetLabel() string {
+	key, isFound := os.LookupEnv("LB_LABEL_NAME")
+	if !isFound {
+		key = "com.docker-lb.load-balance"
+		dh.Logger.Printf("LB_LABEL_NAME not found, falling back to %s", key)
+	}
+	return key
 }

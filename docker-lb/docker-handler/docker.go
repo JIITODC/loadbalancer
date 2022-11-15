@@ -15,6 +15,7 @@ type DockerHandler struct {
 	LastServedIndex int
 	Docker          docker
 	Logger          log.Logger
+	Label           string
 }
 
 type docker struct {
@@ -43,13 +44,13 @@ func InitalizeDockerHandler() DockerHandler {
 // in it
 func (dh *DockerHandler) GetServiceInfo(containerID string) (*models.Server, error) {
 	if dh.Docker.DockerClient == nil {
-		return &models.Server{}, errors.New("no docker client")
+		return nil, errors.New("no docker client")
 	}
 
 	// inspect containers
 	inspect, err := dh.Docker.DockerClient.ContainerInspect(context.Background(), containerID)
 	if err != nil {
-		return &models.Server{}, err
+		return nil, err
 	}
 
 	// collect info on services
@@ -59,14 +60,9 @@ func (dh *DockerHandler) GetServiceInfo(containerID string) (*models.Server, err
 	labels := inspect.Config.Labels
 
 	// fetch label name
-	key, isFound := os.LookupEnv("LB_LABEL_NAME")
-	if !isFound {
-		key = "com.docker-lb.load-balance"
-		dh.Logger.Printf("LB_LABEL_NAME not found, falling back to %s", key)
-	}
-
+	key := "com.docker-lb.load-balance"
 	if _, ok := labels[key]; !ok {
-		return &models.Server{}, nil
+		return nil, nil
 	}
 
 	server.ServiceName = labels[key]
@@ -83,6 +79,7 @@ func (dh *DockerHandler) GetServiceInfo(containerID string) (*models.Server, err
 
 func (dh *DockerHandler) GetNewDockerContainers(containers map[string]struct{}) map[string]struct{} {
 	newContainers := make(map[string]struct{})
+
 	for activeContainerID := range containers {
 		if _, ok := dh.Docker.ContainerIDs[activeContainerID]; !ok {
 			newContainers[activeContainerID] = struct{}{}
