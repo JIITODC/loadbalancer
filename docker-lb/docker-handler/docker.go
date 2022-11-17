@@ -60,7 +60,7 @@ func (dh *DockerHandler) GetServiceInfo(containerID string) (*models.Server, err
 	labels := inspect.Config.Labels
 
 	// fetch label name
-	key := "com.docker-lb.load-balance"
+	key := "dh.Label"
 	if _, ok := labels[key]; !ok {
 		return nil, nil
 	}
