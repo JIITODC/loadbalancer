@@ -60,12 +60,11 @@ func (dh *DockerHandler) GetServiceInfo(containerID string) (*models.Server, err
 	labels := inspect.Config.Labels
 
 	// fetch label name
-	key := "dh.Label"
-	if _, ok := labels[key]; !ok {
+	if _, ok := labels[dh.Label]; !ok {
 		return nil, nil
 	}
 
-	server.ServiceName = labels[key]
+	server.ServiceName = labels[dh.Label]
 	server.Name = inspect.Name
 	networkName := inspect.HostConfig.NetworkMode.NetworkName()
 	endpointSettings := inspect.NetworkSettings.Networks[networkName]
